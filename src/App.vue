@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import TodoComponent from "./components/TodoComponent.vue";
+import TodoComponent from "./components/TodoRowComponent.vue";
 import TodoInputComponent from "./components/TodoInputComponent.vue";
 export default {
   components: {
