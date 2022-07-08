@@ -4,7 +4,7 @@
       type="checkbox"
       :checked="status"
       name="work status"
-      @change="showOnConsole"
+      @change="emitCheckedEvent"
     />
     <h4 :class="{ 'line-through': status }">{{ todo }}</h4>
     <Icon icon="ci:more-horizontal" />
@@ -23,12 +23,8 @@ export default {
     },
   },
   methods: {
-    showOnConsole($event) {
-      this.$emit("checked", {
-        checked: $event.srcElement.checked,
-        todoText: this.todo,
-      });
-      console.log(this.todo);
+    emitCheckedEvent($event) {
+      this.$emit("checked", $event.srcElement.checked);
     },
   },
 };

@@ -1,51 +1,41 @@
 <template>
   <div class="todo-list-container">
-    <div class="todo-input">
-      <Icon class="compose" icon="fluent:compose-16-filled" />
-      <input type="text" placeholder="add new task" @keyup.enter="addtodo" />
-    </div>
-    <todocomponent
-      v-for="todo in todolist"
-      :todo="todo.todo"
+    <TodoInputComponent @addNewTodo="addtodo" />
+
+    <TodoComponent
+      v-for="(todo, index) in todolist"
+      :todo="todo.text"
       :status="todo.isCompleted"
       :key="todo"
-      @checked="onChecked"
+      @checked="onChecked($event, index)"
     />
   </div>
 </template>
 <script>
-import todocomponent from "./components/todocomponent.vue";
-import { Icon } from "@iconify/vue";
-
+import TodoComponent from "./components/TodoComponent.vue";
+import TodoInputComponent from "./components/TodoInputComponent.vue";
 export default {
   components: {
-    todocomponent,
-    Icon,
+    TodoComponent,
+    TodoInputComponent,
   },
   data() {
     return {
       todolist: [
-        { todo: "buy milk", isCompleted: true },
-        { todo: "go to school", isCompleted: false },
+        { text: "buy milk", isCompleted: true },
+        { text: "go to school", isCompleted: false },
       ],
     };
   },
   methods: {
-    addtodo($event) {
-      if ($event.srcElement.value != "") {
-        this.todolist.push({
-          todo: $event.srcElement.value,
-          isCompleted: false,
-        });
-        $event.srcElement.value = "";
-      }
+    addtodo(todoText) {
+      this.todolist.push({
+        text: todoText,
+        isCompleted: false,
+      });
     },
-    onChecked($event) {
-      console.log($event);
-      const index = this.todolist.findIndex(
-        (todoElement) => todoElement.todo == $event.todoText
-      );
-      this.todolist[index].isCompleted = $event.checked;
+    onChecked(isChecked, index) {
+      this.todolist[index].isCompleted = isChecked;
     },
   },
 };
@@ -81,31 +71,5 @@ body {
   background-color: white;
   border-radius: 5px;
   width: 100%;
-}
-
-.todo-input {
-  display: flex;
-  align-items: center;
-  border: 1px solid #666a;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.todo-input input {
-  height: 40px;
-  flex: 1;
-  border: none;
-  outline: none;
-  margin-left: 20px;
-  font-size: 18px;
-}
-
-.todo-input .compose {
-  font-size: 20px;
-  color: #666a;
-}
-
-.todo-input:focus-within {
-  border: 2px solid red;
 }
 </style>
