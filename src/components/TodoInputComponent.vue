@@ -6,7 +6,6 @@
       placeholder="add new task"
       @keyup.enter="emitInputEvent"
     />
-    <button @click="buttonHandler">add</button>
   </div>
 </template>
 
@@ -24,9 +23,6 @@ export default {
         $event.srcElement.value = "";
       }
     },
-    buttonHandler() {
-      this.$emit("addNewTodo", "hi");
-    },
   },
 };
 </script>
@@ -37,6 +33,9 @@ export default {
   align-items: center;
   border: 1px solid #666a;
   padding: 10px;
+  margin: 20px;
+  margin-bottom: 0;
+
   border-radius: 5px;
 }
 

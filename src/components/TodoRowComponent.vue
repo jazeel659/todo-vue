@@ -34,7 +34,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 10px 20px;
+  padding: 10px 0;
 }
 
 .todo-container h4 {
