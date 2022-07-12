@@ -127,6 +127,11 @@ body {
   font-size: 16px;
   padding: 10px;
 }
+@media (max-width: 480px) {
+  .todo-list-container .filter-bar ul {
+    margin-right: 10px;
+  }
+}
 
 .todo-list-container .no-data-message {
   padding: 18px 15px;
