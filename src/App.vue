@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     addtodo(todoText) {
-      this.todolist.push({
+      this.todolist.unshift({
         text: todoText,
         isCompleted: false,
       });
