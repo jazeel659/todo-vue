@@ -14,25 +14,25 @@
       </ul>
       <button @click="clearAll">Clear All</button>
     </section>
-    <p class="no-data-message" v-if="todolist.length == 0">
-      You don't have any task here
+    <p class="no-data-message" v-if="actualTodo.length == 0">
+      {{ noDataInfoMessage }}
     </p>
-    <p v-if="todolist.length > 6">too much work😎</p>
-    <TodoComponent
-      v-for="(todo, index) in todolist"
+    <TodoRowComponent
+      v-for="todo in actualTodo"
       :todo="todo.text"
       :status="todo.isCompleted"
       :key="todo"
-      @checked="onChecked($event, index)"
+      @checked="onChecked(todo.id)"
     />
   </div>
 </template>
 <script>
-import TodoComponent from "./components/TodoRowComponent.vue";
+import TodoRowComponent from "./components/TodoRowComponent.vue";
 import TodoInputComponent from "./components/TodoInputComponent.vue";
+import { v4 as uuidv4 } from "uuid";
 export default {
   components: {
-    TodoComponent,
+    TodoRowComponent,
     TodoInputComponent,
   },
   data() {
@@ -40,17 +40,54 @@ export default {
       todolist: [],
       filterModes: ["All", "Pending", "Completed"],
       selectedFilter: "All",
+      myName: "jaseel",
     };
+  },
+  computed: {
+    getPendingTodos() {
+      return this.todolist.filter((todo) => {
+        return todo.isCompleted == false;
+      });
+    },
+
+    getCompletedTodos() {
+      return this.todolist.filter((todo) => {
+        return todo.isCompleted == true;
+      });
+    },
+    modifiedName() {
+      return "my name is" + this.myName;
+    },
+    actualTodo() {
+      if (this.selectedFilter == "All") {
+        return this.todolist;
+      } else if (this.selectedFilter == "Pending") {
+        return this.getPendingTodos;
+      } else if (this.selectedFilter == "Completed") {
+        return this.getCompletedTodos;
+      }
+    },
+    noDataInfoMessage() {
+      if (this.selectedFilter == "All") {
+        return "You dont have any task😎";
+      } else if (this.selectedFilter == "Pending") {
+        return "You dont have any pending task🎉";
+      } else if (this.selectedFilter == "Completed") {
+        return "You dont have any completed task😒";
+      }
+    },
   },
   methods: {
     addtodo(todoText) {
       this.todolist.unshift({
         text: todoText,
         isCompleted: false,
+        id: uuidv4(),
       });
     },
-    onChecked(isChecked, index) {
-      this.todolist[index].isCompleted = isChecked;
+    onChecked(id) {
+      let index = this.todolist.findIndex((todo) => todo.id == id);
+      this.todolist[index].isCompleted = !this.todolist[index].isCompleted;
     },
     chooseFilter(filter) {
       this.selectedFilter = filter;
